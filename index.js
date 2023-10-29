@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const dns = require("dns");
-const urlRegex = require("url-regex");
+const validUrl = require("valid-url");
 
 const app = express();
 
@@ -25,7 +25,7 @@ app.get("/", function (req, res) {
 app.post("/api/shorturl", (req, res, next) => {
   const { url } = req.body;
 
-  if (!urlRegex({ exact: true }).test(url)) {
+  if (!validUrl.isWebUri(url)) {
     return res.status(400).json({ error: "Invalid URL format" });
   }
 
@@ -47,7 +47,7 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.post("/api/shorturl", (req, res) => {
-  res.json({ message: "Succesfully operation" });
+  res.json({ message: "Successful operation" });
 });
 
 // Listener
