@@ -26,7 +26,7 @@ app.post("/api/shorturl", (req, res, next) => {
   const { url } = req.body;
 
   if (!validUrl.isWebUri(url)) {
-    return res.status(400).json({ error: "Invalid URL format" });
+    return res.status(400).json({ error: "invalid url" });
   }
 
   const urlObject = new URL(url);
@@ -34,7 +34,7 @@ app.post("/api/shorturl", (req, res, next) => {
 
   dns.lookup(host, (err) => {
     if (err) {
-      res.status(400).json({ error: "Invalid hostname in URL" });
+      return res.status(400).json({ error: "invalid hostname" });
     } else {
       next();
     }
