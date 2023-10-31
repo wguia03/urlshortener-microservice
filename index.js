@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const dns = require("dns");
 const validUrl = require("valid-url");
+const perma = require("perma"); // in testing
 
 const app = express();
 
@@ -34,7 +35,7 @@ app.post("/api/shorturl", (req, res, next) => {
 
   dns.lookup(host, (err) => {
     if (err) {
-      return res.status(400).json({ error: "invalid hostname" });
+      return res.status(400).json({ error: "invalid url" });
     } else {
       next();
     }
@@ -47,7 +48,14 @@ app.get("/api/hello", function (req, res) {
 });
 
 app.post("/api/shorturl", (req, res) => {
-  res.json({ message: "Successful operation" });
+  const { url } = req.body;
+
+  const shortUrl = perma(url, 5);
+  res.json({ original_url: url, short_url: shortUrl });
+});
+
+app.get("/api/shorturl/:short_url", (req, res) => {
+  res.json({ message: "In progess" });
 });
 
 // Listener
