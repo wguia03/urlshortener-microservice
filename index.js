@@ -23,11 +23,12 @@ app.get("/", function (req, res) {
 });
 
 // Middleware
+/*
 app.post("/api/shorturl", (req, res, next) => {
   const { url } = req.body;
 
   if (!validUrl.isWebUri(url)) {
-    return res.status(400).json({ error: "invalid url" });
+    return res.json({ error: "invalid url" });
   }
 
   const urlObject = new URL(url);
@@ -35,12 +36,13 @@ app.post("/api/shorturl", (req, res, next) => {
 
   dns.lookup(host, (err) => {
     if (err) {
-      return res.status(400).json({ error: "invalid url" });
+      return res.json({ error: "invalid url" });
     } else {
       next();
     }
   });
 });
+*/
 
 // Endpoints
 app.get("/api/hello", function (req, res) {
@@ -49,6 +51,17 @@ app.get("/api/hello", function (req, res) {
 
 app.post("/api/shorturl", (req, res) => {
   const { url } = req.body;
+
+  if (!validUrl.isWebUri(url)) {
+    return res.json({ error: "invalid url" });
+  }
+
+  const urlObject = new URL(url);
+  const host = urlObject.hostname;
+
+  dns.lookup(host, (err) => {
+    if (err) return res.json({ error: "invalid url" });
+  });
 
   const shortUrl = perma(url, 5);
   res.json({ original_url: url, short_url: shortUrl });
