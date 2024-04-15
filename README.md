@@ -1,5 +1,5 @@
 ## URL Shortener Microservice
-- Acortador y validación de URLs
+- Acortamiento y validación de URLs
 - Generación de un código de 5 caracteres mediante permalinks
 - La ruta para usar el código proporcionado y redireccionar a la URL asociada es la siguiente:
 ~~~
